@@ -1,0 +1,53 @@
+import 'package:just_audio/just_audio.dart';
+import 'package:just_audio_background/just_audio_background.dart';
+
+import '../model/song.dart';
+
+class MusicPlayer {
+  final player = AudioPlayer();
+
+  Future<void> play({required Song song}) async {
+    await player.setAudioSource(AudioSource.uri(
+      Uri.parse(song.url!),
+      tag: MediaItem(
+        id: song.id.toString(),
+        title: song.title,
+        artist: song.artist,
+        artUri: song.photoUrl68 != null ? Uri.parse(song.photoUrl68!) : null,
+      ),
+    ));
+    await player.play();
+  }
+
+  Future<void> pause() async {
+    await player.pause();
+  }
+
+  Future<void> resume() async {
+    await player.play();
+  }
+
+  Future<void> stop() async {
+    await player.stop();
+  }
+
+  Future<void> seek(duration) async {
+    await player.seek(duration);
+  }
+
+  Stream getCurrentPos() {
+    return player.positionStream.cast();
+  }
+
+  Stream getCurrentBufferPos() {
+    return player.bufferedPositionStream.cast();
+  }
+
+  Stream onComplete() {
+    return player.playerStateStream.cast();
+  }
+
+  Future<void> close() async {
+    await player.dispose();
+  }
+}
