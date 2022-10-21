@@ -7,8 +7,9 @@ class MusicPlayer {
   final player = AudioPlayer();
 
   Future<void> play({required Song song}) async {
+    
     await player.setAudioSource(AudioSource.uri(
-      Uri.parse(song.url!),
+      song.online ? Uri.parse(song.url!) : Uri.file(song.url!),
       tag: MediaItem(
         id: song.id.toString(),
         title: song.title,
