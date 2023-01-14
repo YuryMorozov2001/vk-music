@@ -54,7 +54,6 @@ class MusicPlayerBloc extends Bloc<MusicPlayerEvent, MusicPlayerState> {
               } else {
                 break;
               }
-              print(nextSongIndex);
             }
           } else {
             song = readDownloadFolderBloc.state.song![state.nextSongIndex!];
