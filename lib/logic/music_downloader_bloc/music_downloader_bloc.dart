@@ -10,7 +10,7 @@ class MusicDownloaderBloc
   final MusicDownloader musicDownloader;
   MusicDownloaderBloc({required this.musicDownloader})
       : super(MusicDownloaderState()) {
-    on<DownloadMusicEvent>((event, emit) async { 
+    on<DownloadMusicEvent>((event, emit) async {
       List<String> list = state.id.toList();
       list.add(event.id);
       emit(state.copyWith(
@@ -20,7 +20,6 @@ class MusicDownloaderBloc
       list = state.id.toList();
       list.removeWhere((element) => element == event.id);
       emit(state.copyWith(id: list));
-      // emit(state.)
     });
   }
 }

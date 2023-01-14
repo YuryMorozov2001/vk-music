@@ -23,8 +23,8 @@ class Song {
 
   factory Song.fromMap({required Map<String, dynamic> map}) {
     return Song(
-      artist: map['artist'].toString(),
-      title: map['title'].toString(),
+      artist: map['artist'].toString().replaceAll("/", "&"),
+      title: map['title'].toString().replaceAll("/", "&"),
       duration: map['duration'].toString(),
       accessKey: map['access_key']?.toString() ?? '',
       url: map['url']?.toString() ?? '',

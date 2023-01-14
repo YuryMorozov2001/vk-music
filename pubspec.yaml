@@ -39,7 +39,7 @@ dependencies:
   just_audio: ^0.9.29 
   just_audio_background: ^0.0.1-beta.7 
   aes_crypt_null_safe: ^2.0.2
-  ffmpeg_kit_flutter_audio: ^4.5.1
+  ffmpeg_kit_flutter_audio: ^5.1.0 
   path_provider: ^2.0.11
   shimmer: ^2.0.0
   cached_network_image: ^3.2.2

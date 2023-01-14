@@ -2,19 +2,18 @@ import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:path_provider/path_provider.dart'; 
+import 'package:path_provider/path_provider.dart';
 
 import '../../model/song.dart';
 
 part 'file_manager_event.dart';
 part 'file_manager_state.dart';
 
-class FileManagerBloc
-    extends Bloc<FileManagerEvent, FileManagerState> {
+class FileManagerBloc extends Bloc<FileManagerEvent, FileManagerState> {
   FileManagerBloc() : super(FileManagerState()) {
     on<ReadFolderEvent>((event, emit) async {
       final projectPath = await getExternalStorageDirectory();
-      final List<Song>? finalList = await compute(readFiles, projectPath);
+      final List<Song>? finalList = await compute(_readFiles, projectPath);
       emit(state.copyWith(pathFolder: projectPath!.path, song: finalList));
     });
     on<DeleteFileEvent>((event, emit) async {
@@ -27,7 +26,7 @@ class FileManagerBloc
   }
 }
 
-Future<List<Song>?> readFiles(Directory? projectPath) async {
+Future<List<Song>?> _readFiles(Directory? projectPath) async {
   List<FileSystemEntity> files = await projectPath!.list().toList();
   List<Song> song = [];
   List<FileSystemEntity>? songs = files
