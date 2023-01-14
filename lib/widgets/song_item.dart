@@ -10,7 +10,7 @@ import '../const/enums.dart';
 import '../helpers/helpers.dart';
 import '../logic/file_manager_bloc/file_manager_bloc.dart';
 import '../logic/music_downloader_bloc/music_downloader_bloc.dart';
-import '../logic/music_player_bloc/music_player_bloc.dart'; 
+import '../logic/music_player_bloc/music_player_bloc.dart';
 import '../model/song.dart';
 
 class SongItemWidget extends StatelessWidget {
@@ -70,9 +70,12 @@ class SongItemWidget extends StatelessWidget {
                           ),
                         }
                     },
-                    onTap: () => context.read<MusicPlayerBloc>().add(
-                        PlayMusicEvent(
-                            song: song, index: index, playlistId: playlistId)),
+                    onTap: () {
+                      if (song.url != '') {
+                        context.read<MusicPlayerBloc>().add(PlayMusicEvent(
+                            song: song, index: index, playlistId: playlistId));
+                      }
+                    },
                     child: Padding(
                       padding: const EdgeInsets.all(5.0),
                       child: Column(

@@ -41,13 +41,21 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         musicLoaderBloc.add(LoadMusicEvent());
         playlistLoaderBloc.add(Load4PlayListEvent());
       } on DioError catch (e) {
+        print(e.response);
+        if (e.response == null) {
+          emit(state.copyWith(
+              status: Status.submissionFailure,
+              errorMessage: 'Нужен интернет'));
+        }
         if (e.response!.data['redirect_uri'] != null) {
           Navigator.pushNamed(event.context!, '/2fa',
               arguments: e.response!.data);
         } else {
-          emit(state.copyWith(
-              status: Status.submissionFailure,
-              errorMessage: e.response!.data['error_description']));
+          emit(
+            state.copyWith(
+                status: Status.submissionFailure,
+                errorMessage: e.response!.data['error_description']),
+          );
         }
       } catch (e) {
         emit(state.copyWith(

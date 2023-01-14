@@ -9,7 +9,7 @@ import '../../api/vk_api.dart';
 import '../../const/enums.dart';
 import '../../model/song.dart';
 import '../../model/user.dart';
-import '../file_manager_bloc/file_manager_bloc.dart'; 
+import '../file_manager_bloc/file_manager_bloc.dart';
 
 part 'music_player_event.dart';
 part 'music_player_state.dart';
@@ -38,22 +38,29 @@ class MusicPlayerBloc extends Bloc<MusicPlayerEvent, MusicPlayerState> {
       if (event.processingState == ProcessingState.completed) {
         try {
           late Song song;
+          int nextSongIndex = state.nextSongIndex!;
           if (state.onlineSong) {
-            song = (state.playlistId == -1)
-                ? (await vkApi.music.getMusic(
-                        args: 'count=1&offset=${state.nextSongIndex!}'))
-                    .first
-                : (await vkApi.music.getMusic(
-                        args:
-                            'owner_id=${(Hive.box('userBox').get('user') as User).userId}&playlist_id=${state.playlistId}&count=1&offset=${state.nextSongIndex!}'))
-                    .first;
+            while (true) {
+              song = (state.playlistId == -1)
+                  ? (await vkApi.music
+                          .getMusic(args: 'count=1&offset=$nextSongIndex'))
+                      .first
+                  : (await vkApi.music.getMusic(
+                          args:
+                              'owner_id=${(Hive.box('userBox').get('user') as User).userId}&playlist_id=${state.playlistId}&count=1&offset=${state.nextSongIndex!}'))
+                      .first;
+              if (song.url == '') {
+                nextSongIndex++;
+              } else {
+                break;
+              }
+              print(nextSongIndex);
+            }
           } else {
             song = readDownloadFolderBloc.state.song![state.nextSongIndex!];
           }
           add(PlayMusicEvent(
-              song: song,
-              index: state.nextSongIndex!,
-              playlistId: state.playlistId));
+              song: song, index: nextSongIndex, playlistId: state.playlistId));
         } catch (e) {
           add(StopMusicWhenCompletedEvent());
         }
