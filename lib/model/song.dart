@@ -1,4 +1,3 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 class Song {
   final String artist;
   final String title;
@@ -40,10 +39,6 @@ class Song {
   @override
   String toString() {
     return 'Song(artist: $artist, title: $title, duration: $duration)';
-  }
-
-  String deString() {
-    return 'Song(artist: $artist, title: $title, duration: $duration, accessKey: $accessKey, id: $id, url: $url, photoUrl34: $photoUrl34, photoUrl68: $photoUrl68, photoUrl135: $photoUrl135, online: $online)';
   }
 
   @override
